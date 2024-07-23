@@ -7,9 +7,9 @@ aws lambda package size must less than 250mb but transformer.js is 258 mb
 ### I'm try to purge onnxruntime-web
 
 ```javascript
-import { env, pipeline } from '@lambda/transformers';
+import { env, pipeline } from './transformers.js';
 
-env.localModelPath = '/mnt/efs/yourmodel';
+env.localModelPath = '/mnt/efs/models';
 env.allowRemoteModels = false;
 
 async function init() {

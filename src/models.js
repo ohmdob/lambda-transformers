@@ -122,10 +122,14 @@ const MODEL_CLASS_TO_NAME_MAPPING = new Map();
 async function constructSession(pretrained_model_name_or_path, fileName, options) {
     // TODO add option for user to force specify their desired execution provider
     let modelFileName = `onnx/${fileName}${options.quantized ? '_quantized' : ''}.onnx`;
-    let buffer = await getModelFile(pretrained_model_name_or_path, modelFileName, true, options);
+
+    let modelPath =  `${options.cache_dir}/${pretrained_model_name_or_path}/${modelFileName}`;
+    console.log("modelFileName", modelFileName)
+    console.log("pretrained_model_name_or_path", pretrained_model_name_or_path)
+    console.log("model path:", modelPath);
 
     try {
-        return await ort.default.InferenceSession.create(buffer);;
+        return await ort.default.InferenceSession.create(modelPath);
     } catch (err) {
         // If the execution provided was only wasm, throw the error
         if (executionProviders.length === 1 && executionProviders[0] === 'wasm') {
